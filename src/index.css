@@ -96,8 +96,7 @@
 
   @keyframes snake-border {
     0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
   }
 
   .snake-border {
@@ -107,18 +106,19 @@
   .snake-border::before {
     content: '';
     position: absolute;
-    inset: -2px;
+    inset: -1.5px;
     border-radius: inherit;
     background: linear-gradient(
       90deg,
-      hsl(var(--primary) / 0.6),
-      hsl(var(--primary) / 0.1),
-      hsl(var(--primary) / 0.6),
-      hsl(var(--primary) / 0.1),
-      hsl(var(--primary) / 0.6)
+      hsl(var(--border)),
+      hsl(var(--primary) / 0.5),
+      hsl(var(--primary) / 0.8),
+      hsl(var(--primary) / 0.5),
+      hsl(var(--border)),
+      hsl(var(--border))
     );
     background-size: 300% 100%;
-    animation: snake-border 3s linear infinite;
+    animation: snake-border 6s linear infinite;
     z-index: -1;
   }
   .snake-border::after {
