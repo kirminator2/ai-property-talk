@@ -130,7 +130,7 @@ const InputBar = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-2"
+              className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-h-[40vh] sm:max-h-none overflow-y-auto sm:overflow-visible scrollbar-thin"
             >
               {suggestions.map((s) => (
                 <button
