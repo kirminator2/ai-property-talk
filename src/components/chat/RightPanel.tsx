@@ -3,6 +3,7 @@ import { X, ExternalLink, Eye, TrendingDown, TrendingUp, Minus, ChevronLeft, Che
 import { useChatStore } from '@/store/chatStore';
 import { useState } from 'react';
 import type { Property } from '@/types/chat';
+import { Area, AreaChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const formatPrice = (n: number) =>
   new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(n);
@@ -13,26 +14,35 @@ const TrendIcon = ({ trend }: { trend: Property['trend'] }) => {
   return <Minus className="w-4 h-4 text-muted-foreground" />;
 };
 
+const formatShortPrice = (n: number) => {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}М`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(0)}К`;
+  return String(n);
+};
+
 const PriceChart = ({ history }: { history: Property['priceHistory'] }) => {
-  const prices = history.map((h) => h.price);
-  const min = Math.min(...prices);
-  const max = Math.max(...prices);
-  const range = max - min || 1;
+  const data = history.map((h) => ({ date: h.date.slice(5), price: h.price }));
 
   return (
-    <div className="h-20 flex items-end gap-1">
-      {history.map((h, i) => {
-        const height = ((h.price - min) / range) * 60 + 20;
-        return (
-          <div key={i} className="flex-1 flex flex-col items-center gap-1">
-            <div
-              className="w-full rounded-t-sm bg-primary/30 hover:bg-primary/50 transition-colors"
-              style={{ height: `${height}%` }}
-            />
-            <span className="text-[10px] text-muted-foreground">{h.date.slice(5)}</span>
-          </div>
-        );
-      })}
+    <div className="h-32">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
+          <defs>
+            <linearGradient id="priceGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <XAxis dataKey="date" tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} tickFormatter={formatShortPrice} width={45} domain={['dataMin - 100000', 'dataMax + 100000']} />
+          <Tooltip
+            contentStyle={{ background: 'hsl(var(--popover))', border: '1px solid hsl(var(--border))', borderRadius: 8, fontSize: 12 }}
+            labelStyle={{ color: 'hsl(var(--muted-foreground))' }}
+            formatter={(value: number) => [formatPrice(value), 'Цена']}
+          />
+          <Area type="monotone" dataKey="price" stroke="hsl(var(--primary))" strokeWidth={2} fill="url(#priceGrad)" />
+        </AreaChart>
+      </ResponsiveContainer>
     </div>
   );
 };
@@ -109,7 +119,7 @@ const RightPanel = () => {
 
               <div className="p-4 space-y-5">
                 {/* Title & price */}
-                <div>
+                <div className="relative">
                   <h2 className="text-lg font-bold text-foreground mb-1">{property.title}</h2>
                   <p className="text-sm text-muted-foreground mb-3">{property.address}</p>
                   <button
@@ -128,25 +138,23 @@ const RightPanel = () => {
                     )}
                   </button>
                   <p className="text-xs text-muted-foreground mt-1">{formatPrice(property.pricePerSqm)} / м²</p>
-                </div>
 
-                {/* Price history - collapsible */}
-                <AnimatePresence>
-                  {showPriceHistory && priceHasChanges && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pb-1">
+                  {/* Price history - overlay dropdown */}
+                  <AnimatePresence>
+                    {showPriceHistory && priceHasChanges && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute left-0 right-0 top-full mt-2 z-10 bg-panel border border-border rounded-xl p-4 shadow-lg"
+                      >
                         <h3 className="text-sm font-semibold text-foreground mb-3">История цены</h3>
                         <PriceChart history={property.priceHistory} />
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 {/* Specs */}
                 <div className="grid grid-cols-3 gap-3">
