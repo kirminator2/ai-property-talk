@@ -100,12 +100,14 @@ interface ChatStore {
   selectedProperty: Property | null;
   isPanelOpen: boolean;
   isSidebarOpen: boolean;
+  isSidebarPinned: boolean;
   isTyping: boolean;
   addMessage: (msg: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
   selectProperty: (p: Property) => void;
   closePanel: () => void;
   toggleSidebar: () => void;
   setSidebarOpen: (open: boolean) => void;
+  toggleSidebarPin: () => void;
   simulateAIResponse: (userMessage: string) => void;
 }
 
