@@ -11,7 +11,7 @@ const Index = () => {
   const showStaticSidebar = isSidebarPinned && isSidebarOpen;
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="min-h-screen flex flex-col md:h-screen md:overflow-hidden">
       <Header />
       <div className="flex-1 flex min-h-0">
         {showStaticSidebar && <HistorySidebar />}
