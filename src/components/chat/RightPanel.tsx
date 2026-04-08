@@ -119,7 +119,7 @@ const RightPanel = () => {
 
               <div className="p-4 space-y-5">
                 {/* Title & price */}
-                <div>
+                <div className="relative">
                   <h2 className="text-lg font-bold text-foreground mb-1">{property.title}</h2>
                   <p className="text-sm text-muted-foreground mb-3">{property.address}</p>
                   <button
@@ -138,6 +138,22 @@ const RightPanel = () => {
                     )}
                   </button>
                   <p className="text-xs text-muted-foreground mt-1">{formatPrice(property.pricePerSqm)} / м²</p>
+
+                  {/* Price history - overlay dropdown */}
+                  <AnimatePresence>
+                    {showPriceHistory && priceHasChanges && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute left-0 right-0 top-full mt-2 z-10 bg-panel border border-border rounded-xl p-4 shadow-lg"
+                      >
+                        <h3 className="text-sm font-semibold text-foreground mb-3">История цены</h3>
+                        <PriceChart history={property.priceHistory} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 {/* Price history - collapsible */}
