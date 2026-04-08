@@ -1,5 +1,5 @@
-import { Menu, Bell, Sparkles, MapPin, ChevronDown } from 'lucide-react';
-import { useChatStore, type CityKey } from '@/store/chatStore';
+import { Menu, Bell, Sparkles, MapPin, ChevronDown, MessageSquare, LayoutGrid } from 'lucide-react';
+import { useChatStore, type CityKey, type AppMode } from '@/store/chatStore';
 import { useState, useRef, useEffect } from 'react';
 
 const CITIES: { key: CityKey; label: string }[] = [
@@ -14,6 +14,8 @@ const Header = () => {
   const toggleSidebar = useChatStore((s) => s.toggleSidebar);
   const selectedCity = useChatStore((s) => s.selectedCity);
   const setCity = useChatStore((s) => s.setCity);
+  const appMode = useChatStore((s) => s.appMode);
+  const setAppMode = useChatStore((s) => s.setAppMode);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -39,6 +41,28 @@ const Header = () => {
           </div>
           <span className="font-semibold text-foreground text-lg hidden sm:inline">EstateAI</span>
         </div>
+      </div>
+
+      {/* Mode toggle */}
+      <div className="flex items-center bg-secondary rounded-xl p-1">
+        <button
+          onClick={() => setAppMode('gpt')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+            appMode === 'gpt' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <MessageSquare className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">GPT</span>
+        </button>
+        <button
+          onClick={() => setAppMode('catalog')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+            appMode === 'catalog' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <LayoutGrid className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">Каталог</span>
+        </button>
       </div>
 
       <div className="flex items-center gap-3">

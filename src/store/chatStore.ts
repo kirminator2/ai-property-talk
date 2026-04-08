@@ -95,6 +95,7 @@ const MOCK_PROJECTS: ChatProject[] = [
 ];
 
 export type CityKey = 'moscow' | 'spb' | 'sochi' | 'kazan' | 'novosibirsk';
+export type AppMode = 'gpt' | 'catalog';
 
 const CITY_LABELS: Record<CityKey, string> = {
   moscow: 'Москва',
@@ -103,6 +104,8 @@ const CITY_LABELS: Record<CityKey, string> = {
   kazan: 'Казань',
   novosibirsk: 'Новосибирск',
 };
+
+export { MOCK_PROPERTIES };
 
 interface ChatStore {
   messages: ChatMessage[];
@@ -113,6 +116,8 @@ interface ChatStore {
   isSidebarPinned: boolean;
   isTyping: boolean;
   selectedCity: CityKey;
+  appMode: AppMode;
+  setAppMode: (mode: AppMode) => void;
   setCity: (city: CityKey) => void;
   addMessage: (msg: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
   selectProperty: (p: Property) => void;
@@ -139,6 +144,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   isSidebarPinned: localStorage.getItem('sidebar-pinned') === 'true',
   isTyping: false,
   selectedCity: (localStorage.getItem('selected-city') as CityKey) || 'moscow',
+  appMode: 'gpt',
+  setAppMode: (mode) => set({ appMode: mode }),
   setCity: (city) => {
     localStorage.setItem('selected-city', city);
     set({ selectedCity: city });
