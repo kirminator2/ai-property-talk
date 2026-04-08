@@ -60,6 +60,8 @@ const MOCK_PROPERTIES: Property[] = [
     source: 'Яндекс.Недвижимость',
     sourceUrl: '#',
     addedDate: '2026-04-07',
+    lat: 55.7558,
+    lng: 37.6173,
   },
   {
     id: '3',
