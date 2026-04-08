@@ -89,6 +89,8 @@ const MOCK_PROPERTIES: Property[] = [
     source: 'Авито',
     sourceUrl: '#',
     addedDate: '2026-04-06',
+    lat: 59.9343,
+    lng: 30.3351,
   },
 ];
 
