@@ -26,7 +26,7 @@ const Index = () => {
           <CatalogView />
         )}
       </div>
-      {appMode === 'gpt' && !showStaticSidebar && <HistorySidebar />}
+      {!showStaticSidebar && <HistorySidebar />}
       <RightPanel />
     </div>
   );
