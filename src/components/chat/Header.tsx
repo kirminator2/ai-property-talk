@@ -14,6 +14,8 @@ const Header = () => {
   const toggleSidebar = useChatStore((s) => s.toggleSidebar);
   const selectedCity = useChatStore((s) => s.selectedCity);
   const setCity = useChatStore((s) => s.setCity);
+  const appMode = useChatStore((s) => s.appMode);
+  const setAppMode = useChatStore((s) => s.setAppMode);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
