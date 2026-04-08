@@ -112,21 +112,21 @@ const RightPanel = () => {
                 <div>
                   <h2 className="text-lg font-bold text-foreground mb-1">{property.title}</h2>
                   <p className="text-sm text-muted-foreground mb-3">{property.address}</p>
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => priceHasChanges && setShowPriceHistory((v) => !v)}
-                      className={`text-2xl font-bold text-primary ${priceHasChanges ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
-                    >
+                  <button
+                    onClick={() => priceHasChanges && setShowPriceHistory((v) => !v)}
+                    className={`flex items-center gap-3 ${priceHasChanges ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+                  >
+                    <span className="text-2xl font-bold text-primary">
                       {formatPrice(property.price)}
-                    </button>
-                    <div className="flex items-center gap-1">
+                    </span>
+                    <span className="flex items-center gap-1">
                       <TrendIcon trend={property.trend} />
                       <span className="text-sm text-muted-foreground">{property.trendPercent > 0 ? '+' : ''}{property.trendPercent}%</span>
-                    </div>
+                    </span>
                     {priceHasChanges && (
                       <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${showPriceHistory ? 'rotate-180' : ''}`} />
                     )}
-                  </div>
+                  </button>
                   <p className="text-xs text-muted-foreground mt-1">{formatPrice(property.pricePerSqm)} / м²</p>
                 </div>
 
