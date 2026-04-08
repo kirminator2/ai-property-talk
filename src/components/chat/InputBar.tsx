@@ -98,25 +98,27 @@ const InputBar = () => {
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
       className="bg-background px-3 shrink-0 py-3"
     >
-      <div className="max-w-3xl mx-auto space-y-3 w-full">
-        {/* Input field */}
-        <div className="flex items-end gap-2 bg-secondary rounded-xl px-3 py-2 border border-border focus-within:border-primary/50 transition-colors">
-          <textarea
-            ref={inputRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            rows={1}
-            placeholder="Опишите, что вы ищете..."
-            className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground resize-none outline-none max-h-[120px]"
-          />
-          <button
-            onClick={() => send()}
-            disabled={!input.trim() || isTyping}
-            className="p-2 rounded-lg bg-primary text-primary-foreground disabled:opacity-40 hover:opacity-90 transition-opacity shrink-0"
-          >
-            <Send className="w-4 h-4" />
-          </button>
+      <div className="max-w-3xl mx-auto space-y-5 w-full">
+        {/* Input field with snake border */}
+        <div className="snake-border rounded-xl">
+          <div className="flex items-end gap-2 bg-secondary rounded-xl px-3 py-2">
+            <textarea
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              rows={1}
+              placeholder="Опишите, что вы ищете..."
+              className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground resize-none outline-none max-h-[120px]"
+            />
+            <button
+              onClick={() => send()}
+              disabled={!input.trim() || isTyping}
+              className="p-2 rounded-lg bg-foreground text-background disabled:opacity-40 hover:bg-primary hover:text-primary-foreground transition-colors shrink-0"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Suggestion cards - city-specific */}

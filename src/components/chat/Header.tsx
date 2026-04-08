@@ -49,7 +49,7 @@ const Header = () => {
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border hover:border-primary/40 transition-colors text-sm"
           >
             <MapPin className="w-3.5 h-3.5 text-primary" />
-            <span className="text-foreground font-medium">{current.label}</span>
+            <span className="text-foreground font-medium truncate max-w-[80px] sm:max-w-none">{current.label}</span>
             <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground transition-transform ${open ? 'rotate-180' : ''}`} />
           </button>
           {open && (
