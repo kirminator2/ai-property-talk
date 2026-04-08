@@ -105,6 +105,8 @@ const CITY_LABELS: Record<CityKey, string> = {
   novosibirsk: 'Новосибирск',
 };
 
+export { MOCK_PROPERTIES };
+
 interface ChatStore {
   messages: ChatMessage[];
   projects: ChatProject[];
