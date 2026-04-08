@@ -31,6 +31,8 @@ const MOCK_PROPERTIES: Property[] = [
     source: 'ЦИАН',
     sourceUrl: '#',
     addedDate: '2026-04-05',
+    lat: 43.5855,
+    lng: 39.7231,
   },
   {
     id: '2',
