@@ -98,7 +98,7 @@ const InputBar = () => {
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
       className="bg-background px-3 shrink-0 py-3"
     >
-      <div className="max-w-3xl mx-auto space-y-16 w-full">
+      <div className="max-w-3xl mx-auto space-y-12 w-full">
         {/* Input field with snake border */}
         <div className="snake-border rounded-xl">
           <div className="flex items-end gap-2 bg-secondary rounded-xl px-3 py-2">
