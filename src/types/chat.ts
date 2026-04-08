@@ -19,6 +19,8 @@ export interface Property {
   source: string;
   sourceUrl: string;
   addedDate: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface ChatMessage {
