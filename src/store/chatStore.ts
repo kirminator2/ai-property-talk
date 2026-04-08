@@ -96,6 +96,14 @@ const MOCK_PROJECTS: ChatProject[] = [
 
 export type CityKey = 'moscow' | 'spb' | 'sochi' | 'kazan' | 'novosibirsk';
 
+const CITY_LABELS: Record<CityKey, string> = {
+  moscow: 'Москва',
+  spb: 'Санкт-Петербург',
+  sochi: 'Сочи',
+  kazan: 'Казань',
+  novosibirsk: 'Новосибирск',
+};
+
 interface ChatStore {
   messages: ChatMessage[];
   projects: ChatProject[];
@@ -153,11 +161,13 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   simulateAIResponse: (userMessage: string) => {
     const store = get();
+    const cityLabel = CITY_LABELS[store.selectedCity];
+    const fullMessage = `[${cityLabel}] ${userMessage}`;
     store.addMessage({ role: 'user', content: userMessage });
     set({ isTyping: true });
 
     setTimeout(() => {
-      const lower = userMessage.toLowerCase();
+      const lower = fullMessage.toLowerCase();
       let response: Omit<ChatMessage, 'id' | 'timestamp'>;
 
       if (lower.includes('мор') || lower.includes('сочи') || lower.includes('вид')) {
