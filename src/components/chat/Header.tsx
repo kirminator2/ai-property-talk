@@ -1,5 +1,5 @@
-import { Menu, Bell, Sparkles, MapPin, ChevronDown } from 'lucide-react';
-import { useChatStore, type CityKey } from '@/store/chatStore';
+import { Menu, Bell, Sparkles, MapPin, ChevronDown, MessageSquare, LayoutGrid } from 'lucide-react';
+import { useChatStore, type CityKey, type AppMode } from '@/store/chatStore';
 import { useState, useRef, useEffect } from 'react';
 
 const CITIES: { key: CityKey; label: string }[] = [
