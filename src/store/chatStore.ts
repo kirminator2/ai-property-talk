@@ -123,7 +123,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   projects: MOCK_PROJECTS,
   selectedProperty: null,
   isPanelOpen: false,
-  isSidebarOpen: false,
+  isSidebarOpen: localStorage.getItem('sidebar-pinned') === 'true',
+  isSidebarPinned: localStorage.getItem('sidebar-pinned') === 'true',
   isTyping: false,
 
   addMessage: (msg) =>
