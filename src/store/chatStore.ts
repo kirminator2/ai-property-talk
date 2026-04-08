@@ -100,12 +100,14 @@ interface ChatStore {
   selectedProperty: Property | null;
   isPanelOpen: boolean;
   isSidebarOpen: boolean;
+  isSidebarPinned: boolean;
   isTyping: boolean;
   addMessage: (msg: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
   selectProperty: (p: Property) => void;
   closePanel: () => void;
   toggleSidebar: () => void;
   setSidebarOpen: (open: boolean) => void;
+  toggleSidebarPin: () => void;
   simulateAIResponse: (userMessage: string) => void;
 }
 
@@ -121,7 +123,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   projects: MOCK_PROJECTS,
   selectedProperty: null,
   isPanelOpen: false,
-  isSidebarOpen: false,
+  isSidebarOpen: localStorage.getItem('sidebar-pinned') === 'true',
+  isSidebarPinned: localStorage.getItem('sidebar-pinned') === 'true',
   isTyping: false,
 
   addMessage: (msg) =>
@@ -133,6 +136,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   closePanel: () => set({ isPanelOpen: false }),
   toggleSidebar: () => set((s) => ({ isSidebarOpen: !s.isSidebarOpen })),
   setSidebarOpen: (open) => set({ isSidebarOpen: open }),
+  toggleSidebarPin: () => set((s) => {
+    const newPinned = !s.isSidebarPinned;
+    localStorage.setItem('sidebar-pinned', String(newPinned));
+    return { isSidebarPinned: newPinned, isSidebarOpen: newPinned };
+  }),
 
   simulateAIResponse: (userMessage: string) => {
     const store = get();
