@@ -1,8 +1,31 @@
-import { Menu, Bell, Sparkles } from 'lucide-react';
-import { useChatStore } from '@/store/chatStore';
+import { Menu, Bell, Sparkles, MapPin, ChevronDown } from 'lucide-react';
+import { useChatStore, type CityKey } from '@/store/chatStore';
+import { useState, useRef, useEffect } from 'react';
+
+const CITIES: { key: CityKey; label: string }[] = [
+  { key: 'moscow', label: 'Москва' },
+  { key: 'spb', label: 'Санкт-Петербург' },
+  { key: 'sochi', label: 'Сочи' },
+  { key: 'kazan', label: 'Казань' },
+  { key: 'novosibirsk', label: 'Новосибирск' },
+];
 
 const Header = () => {
   const toggleSidebar = useChatStore((s) => s.toggleSidebar);
+  const selectedCity = useChatStore((s) => s.selectedCity);
+  const setCity = useChatStore((s) => s.setCity);
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const current = CITIES.find((c) => c.key === selectedCity)!;
 
   return (
     <header className="h-14 flex items-center justify-between px-4 border-b border-border glass shrink-0 z-20">
@@ -18,7 +41,36 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
+        {/* City selector */}
+        <div ref={ref} className="relative">
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border hover:border-primary/40 transition-colors text-sm"
+          >
+            <MapPin className="w-3.5 h-3.5 text-primary" />
+            <span className="text-foreground font-medium">{current.label}</span>
+            <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground transition-transform ${open ? 'rotate-180' : ''}`} />
+          </button>
+          {open && (
+            <div className="absolute top-full right-0 mt-1 w-48 bg-popover border border-border rounded-xl shadow-lg py-1 z-50">
+              {CITIES.map((city) => (
+                <button
+                  key={city.key}
+                  onClick={() => { setCity(city.key); setOpen(false); }}
+                  className={`w-full text-left px-3 py-2 text-sm transition-colors ${
+                    city.key === selectedCity
+                      ? 'text-primary bg-primary/10'
+                      : 'text-foreground hover:bg-accent'
+                  }`}
+                >
+                  {city.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-success/10 text-sm">
           <span className="w-2 h-2 rounded-full bg-success animate-pulse-dot" />
           <span className="text-success font-medium hidden sm:inline">Онлайн</span>
