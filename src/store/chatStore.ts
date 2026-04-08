@@ -116,6 +116,8 @@ interface ChatStore {
   isSidebarPinned: boolean;
   isTyping: boolean;
   selectedCity: CityKey;
+  appMode: AppMode;
+  setAppMode: (mode: AppMode) => void;
   setCity: (city: CityKey) => void;
   addMessage: (msg: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
   selectProperty: (p: Property) => void;
