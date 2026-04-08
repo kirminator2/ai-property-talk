@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Eye, TrendingDown, TrendingUp, Minus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ExternalLink, Eye, TrendingDown, TrendingUp, Minus, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { useChatStore } from '@/store/chatStore';
 import { useState } from 'react';
 import type { Property } from '@/types/chat';
@@ -37,13 +37,20 @@ const PriceChart = ({ history }: { history: Property['priceHistory'] }) => {
   );
 };
 
+const hasPriceChanges = (history: Property['priceHistory']) => {
+  if (history.length < 2) return false;
+  return history.some((h, i) => i > 0 && h.price !== history[i - 1].price);
+};
+
 const RightPanel = () => {
   const { selectedProperty: property, isPanelOpen, closePanel } = useChatStore();
   const [imgIdx, setImgIdx] = useState(0);
+  const [showPriceHistory, setShowPriceHistory] = useState(false);
 
   if (!property) return null;
 
   const imgs = property.images;
+  const priceHasChanges = hasPriceChanges(property.priceHistory);
 
   return (
     <AnimatePresence>
@@ -106,14 +113,40 @@ const RightPanel = () => {
                   <h2 className="text-lg font-bold text-foreground mb-1">{property.title}</h2>
                   <p className="text-sm text-muted-foreground mb-3">{property.address}</p>
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl font-bold text-primary">{formatPrice(property.price)}</span>
+                    <button
+                      onClick={() => priceHasChanges && setShowPriceHistory((v) => !v)}
+                      className={`text-2xl font-bold text-primary ${priceHasChanges ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+                    >
+                      {formatPrice(property.price)}
+                    </button>
                     <div className="flex items-center gap-1">
                       <TrendIcon trend={property.trend} />
                       <span className="text-sm text-muted-foreground">{property.trendPercent > 0 ? '+' : ''}{property.trendPercent}%</span>
                     </div>
+                    {priceHasChanges && (
+                      <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${showPriceHistory ? 'rotate-180' : ''}`} />
+                    )}
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">{formatPrice(property.pricePerSqm)} / м²</p>
                 </div>
+
+                {/* Price history - collapsible */}
+                <AnimatePresence>
+                  {showPriceHistory && priceHasChanges && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pb-1">
+                        <h3 className="text-sm font-semibold text-foreground mb-3">История цены</h3>
+                        <PriceChart history={property.priceHistory} />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* Specs */}
                 <div className="grid grid-cols-3 gap-3">
@@ -127,12 +160,6 @@ const RightPanel = () => {
                       <p className="text-sm font-semibold text-foreground mt-0.5">{s.value}</p>
                     </div>
                   ))}
-                </div>
-
-                {/* Price history */}
-                <div>
-                  <h3 className="text-sm font-semibold text-foreground mb-3">История цены</h3>
-                  <PriceChart history={property.priceHistory} />
                 </div>
 
                 {/* Description */}
@@ -150,24 +177,24 @@ const RightPanel = () => {
                     ))}
                   </div>
                 </div>
-
-                {/* Actions */}
-                <div className="space-y-2 pb-4">
-                  <button className="w-full py-2.5 rounded-xl bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
-                    <Eye className="w-4 h-4" />
-                    Добавить в отслеживание
-                  </button>
-                  <a
-                    href={property.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2.5 rounded-xl border border-border text-sm text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Открыть на {property.source}
-                  </a>
-                </div>
               </div>
+            </div>
+
+            {/* Sticky bottom actions */}
+            <div className="shrink-0 border-t border-border p-4 space-y-2 bg-panel">
+              <button className="w-full py-2.5 rounded-xl bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                <Eye className="w-4 h-4" />
+                Добавить в отслеживание
+              </button>
+              <a
+                href={property.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 rounded-xl border border-border text-sm text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors flex items-center justify-center gap-2"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Открыть на {property.source}
+              </a>
             </div>
           </motion.div>
         </>
