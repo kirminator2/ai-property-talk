@@ -144,6 +144,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   isSidebarPinned: localStorage.getItem('sidebar-pinned') === 'true',
   isTyping: false,
   selectedCity: (localStorage.getItem('selected-city') as CityKey) || 'moscow',
+  appMode: 'gpt',
+  setAppMode: (mode) => set({ appMode: mode }),
   setCity: (city) => {
     localStorage.setItem('selected-city', city);
     set({ selectedCity: city });
