@@ -10,6 +10,11 @@ const SUGGESTIONS = [
   { label: 'Квартиры с видом на море до 10 млн', image: property1 },
   { label: 'Новостройки рядом с метро', image: property2 },
   { label: 'Студии для инвестиций в СПб', image: property3 },
+  { label: 'Квартиры у парка с террасой', image: property1 },
+  { label: 'Пентхаусы в центре Москвы', image: property2 },
+  { label: 'Апартаменты с отделкой под ключ', image: property3 },
+  { label: 'Квартиры в сданных новостройках', image: property1 },
+  { label: 'Двушки до 15 млн у метро', image: property2 },
 ];
 
 const InputBar = () => {
@@ -21,11 +26,11 @@ const InputBar = () => {
 
   const isInitial = messages.length <= 1;
 
-  const send = () => {
-    const text = input.trim();
-    if (!text || isTyping) return;
+  const send = (text?: string) => {
+    const msg = (text ?? input).trim();
+    if (!msg || isTyping) return;
     setInput('');
-    simulateAIResponse(text);
+    simulateAIResponse(msg);
     if (inputRef.current) inputRef.current.style.height = 'auto';
   };
 
@@ -47,57 +52,9 @@ const InputBar = () => {
     <motion.div
       layout
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-      className="border-t border-border bg-background px-3 shrink-0 py-3"
+      className="bg-background px-3 shrink-0 py-3"
     >
       <div className="max-w-3xl mx-auto space-y-3 w-full">
-        {/* Suggestion cards */}
-        <AnimatePresence>
-          {isInitial && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="flex gap-3 overflow-x-auto scrollbar-thin pb-1"
-            >
-              {SUGGESTIONS.map((s) => (
-                <button
-                  key={s.label}
-                  onClick={() => { setInput(s.label); inputRef.current?.focus(); }}
-                  className="shrink-0 w-44 rounded-xl border border-border bg-secondary hover:border-primary/40 hover:bg-secondary/80 transition-all overflow-hidden text-left group"
-                >
-                  <div className="h-20 overflow-hidden">
-                    <img
-                      src={s.image}
-                      alt={s.label}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  </div>
-                  <p className="px-2.5 py-2 text-xs text-muted-foreground leading-tight line-clamp-2">
-                    {s.label}
-                  </p>
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Compact pill suggestions when not initial */}
-        {!isInitial && (
-          <div className="flex gap-2 overflow-x-auto scrollbar-thin pb-1">
-            {SUGGESTIONS.map((s) => (
-              <button
-                key={s.label}
-                onClick={() => { setInput(s.label); inputRef.current?.focus(); }}
-                className="shrink-0 px-3 py-1.5 rounded-full border border-border text-xs text-muted-foreground hover:border-primary hover:text-primary transition-colors"
-              >
-                {s.label}
-              </button>
-            ))}
-          </div>
-        )}
-
         {/* Input field */}
         <div className="flex items-end gap-2 bg-secondary rounded-xl px-3 py-2 border border-border focus-within:border-primary/50 transition-colors">
           <textarea
@@ -110,13 +67,60 @@ const InputBar = () => {
             className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground resize-none outline-none max-h-[120px]"
           />
           <button
-            onClick={send}
+            onClick={() => send()}
             disabled={!input.trim() || isTyping}
             className="p-2 rounded-lg bg-primary text-primary-foreground disabled:opacity-40 hover:opacity-90 transition-opacity shrink-0"
           >
             <Send className="w-4 h-4" />
           </button>
         </div>
+
+        {/* Suggestion cards - 8 cards in 2 rows on initial, pills after */}
+        <AnimatePresence>
+          {isInitial && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-2"
+            >
+              {SUGGESTIONS.map((s) => (
+                <button
+                  key={s.label}
+                  onClick={() => send(s.label)}
+                  className="rounded-xl border border-border bg-secondary hover:border-primary/40 hover:bg-secondary/80 transition-all overflow-hidden text-left group"
+                >
+                  <div className="h-16 overflow-hidden">
+                    <img
+                      src={s.image}
+                      alt={s.label}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                  <p className="px-2 py-1.5 text-xs text-muted-foreground leading-tight line-clamp-2">
+                    {s.label}
+                  </p>
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {!isInitial && (
+          <div className="flex gap-2 overflow-x-auto scrollbar-thin pb-1">
+            {SUGGESTIONS.slice(0, 3).map((s) => (
+              <button
+                key={s.label}
+                onClick={() => send(s.label)}
+                className="shrink-0 px-3 py-1.5 rounded-full border border-border text-xs text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );
