@@ -7,10 +7,10 @@ const HistorySidebar = () => {
 
   if (!isSidebarOpen) return null;
 
-  // Pinned: render static sidebar (no animation overlay)
+  // Pinned: render static sidebar (no animation overlay) — desktop only
   if (isSidebarPinned) {
     return (
-      <aside className="hidden md:flex w-72 bg-sidebar border-r border-sidebar-border flex-col shrink-0">
+      <aside className="hidden lg:flex w-72 bg-sidebar border-r border-sidebar-border flex-col shrink-0">
         <SidebarContent
           isPinned={isSidebarPinned}
           onClose={() => { toggleSidebarPin(); setSidebarOpen(false); }}
