@@ -96,6 +96,14 @@ const MOCK_PROJECTS: ChatProject[] = [
 
 export type CityKey = 'moscow' | 'spb' | 'sochi' | 'kazan' | 'novosibirsk';
 
+const CITY_LABELS: Record<CityKey, string> = {
+  moscow: 'Москва',
+  spb: 'Санкт-Петербург',
+  sochi: 'Сочи',
+  kazan: 'Казань',
+  novosibirsk: 'Новосибирск',
+};
+
 interface ChatStore {
   messages: ChatMessage[];
   projects: ChatProject[];
