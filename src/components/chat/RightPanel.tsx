@@ -3,6 +3,7 @@ import { X, ExternalLink, Eye, TrendingDown, TrendingUp, Minus, ChevronLeft, Che
 import { useChatStore } from '@/store/chatStore';
 import { useState } from 'react';
 import type { Property } from '@/types/chat';
+import { Area, AreaChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const formatPrice = (n: number) =>
   new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(n);
