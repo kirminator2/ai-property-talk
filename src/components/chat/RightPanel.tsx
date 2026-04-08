@@ -156,24 +156,6 @@ const RightPanel = () => {
                   </AnimatePresence>
                 </div>
 
-                {/* Price history - collapsible */}
-                <AnimatePresence>
-                  {showPriceHistory && priceHasChanges && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pb-1">
-                        <h3 className="text-sm font-semibold text-foreground mb-3">История цены</h3>
-                        <PriceChart history={property.priceHistory} />
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
                 {/* Specs */}
                 <div className="grid grid-cols-3 gap-3">
                   {[
