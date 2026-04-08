@@ -47,9 +47,7 @@ const InputBar = () => {
     <motion.div
       layout
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-      className={`border-t border-border bg-background px-3 shrink-0 ${
-        isInitial ? 'flex-1 flex items-center' : 'py-3'
-      }`}
+      className="border-t border-border bg-background px-3 shrink-0 py-3"
     >
       <div className="max-w-3xl mx-auto space-y-3 w-full">
         {/* Suggestion cards */}
