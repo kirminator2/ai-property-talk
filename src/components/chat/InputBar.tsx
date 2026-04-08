@@ -91,7 +91,7 @@ const InputBar = () => {
                   onClick={() => send(s.label)}
                   className="rounded-xl border border-border bg-secondary hover:border-primary/40 hover:bg-secondary/80 transition-all overflow-hidden text-left group"
                 >
-                  <div className="h-16 overflow-hidden">
+                  <div className="h-28 overflow-hidden">
                     <img
                       src={s.image}
                       alt={s.label}
