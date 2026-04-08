@@ -94,6 +94,8 @@ const MOCK_PROJECTS: ChatProject[] = [
   { id: '3', title: 'Инвестиции в студии СПб', lastMessage: 'Средняя доходность 7.2%', updatedAt: new Date('2026-04-06'), pinned: false },
 ];
 
+export type CityKey = 'moscow' | 'spb' | 'sochi' | 'kazan' | 'novosibirsk';
+
 interface ChatStore {
   messages: ChatMessage[];
   projects: ChatProject[];
@@ -102,6 +104,8 @@ interface ChatStore {
   isSidebarOpen: boolean;
   isSidebarPinned: boolean;
   isTyping: boolean;
+  selectedCity: CityKey;
+  setCity: (city: CityKey) => void;
   addMessage: (msg: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
   selectProperty: (p: Property) => void;
   closePanel: () => void;
