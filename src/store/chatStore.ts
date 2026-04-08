@@ -92,6 +92,151 @@ const MOCK_PROPERTIES: Property[] = [
     lat: 59.9343,
     lng: 30.3351,
   },
+  {
+    id: '4',
+    title: '4-комн. квартира в центре',
+    address: 'Казань, ул. Баумана, 15',
+    price: 12800000,
+    pricePerSqm: 142222,
+    area: 90,
+    rooms: 4,
+    floor: 6,
+    totalFloors: 14,
+    image: property1,
+    images: [property1, property3, property2],
+    priceHistory: [
+      { date: '2025-10', price: 12000000 },
+      { date: '2025-12', price: 12300000 },
+      { date: '2026-02', price: 12600000 },
+      { date: '2026-04', price: 12800000 },
+    ],
+    priceScore: 'fair',
+    trend: 'up',
+    trendPercent: 6.7,
+    description: 'Просторная квартира в историческом центре Казани. Рядом Кремль, парки, рестораны.',
+    features: ['Исторический центр', 'Рядом Кремль', 'Высокие потолки', 'Парковка во дворе'],
+    source: 'ЦИАН',
+    sourceUrl: '#',
+    addedDate: '2026-04-04',
+    lat: 55.7963,
+    lng: 49.1088,
+  },
+  {
+    id: '5',
+    title: '1-комн. квартира у метро',
+    address: 'Новосибирск, ул. Ленина, 78',
+    price: 4200000,
+    pricePerSqm: 105000,
+    area: 40,
+    rooms: 1,
+    floor: 3,
+    totalFloors: 9,
+    image: property2,
+    images: [property2, property3, property1],
+    priceHistory: [
+      { date: '2025-10', price: 4100000 },
+      { date: '2025-12', price: 4150000 },
+      { date: '2026-02', price: 4200000 },
+      { date: '2026-04', price: 4200000 },
+    ],
+    priceScore: 'low',
+    trend: 'stable',
+    trendPercent: 1.2,
+    description: 'Квартира с ремонтом рядом с метро. Тихий двор, хорошая инфраструктура.',
+    features: ['Метро 3 мин', 'Тихий двор', 'Свежий ремонт', 'Мебель'],
+    source: 'Авито',
+    sourceUrl: '#',
+    addedDate: '2026-04-03',
+    lat: 55.0302,
+    lng: 82.9204,
+  },
+  {
+    id: '6',
+    title: '2-комн. квартира с террасой',
+    address: 'Сочи, ул. Навагинская, 12',
+    price: 11500000,
+    pricePerSqm: 191666,
+    area: 60,
+    rooms: 2,
+    floor: 15,
+    totalFloors: 20,
+    image: property3,
+    images: [property3, property2, property1],
+    priceHistory: [
+      { date: '2025-10', price: 12000000 },
+      { date: '2025-12', price: 11800000 },
+      { date: '2026-02', price: 11600000 },
+      { date: '2026-04', price: 11500000 },
+    ],
+    priceScore: 'fair',
+    trend: 'down',
+    trendPercent: -4.2,
+    description: 'Стильная квартира с большой террасой и видом на горы. Премиальный жилой комплекс.',
+    features: ['Терраса 15м²', 'Вид на горы', 'Премиум-класс', 'Консьерж'],
+    source: 'ЦИАН',
+    sourceUrl: '#',
+    addedDate: '2026-04-07',
+    lat: 43.5992,
+    lng: 39.7257,
+  },
+  {
+    id: '7',
+    title: 'Пентхаус с панорамой',
+    address: 'Москва, Пресненская наб., 6',
+    price: 45000000,
+    pricePerSqm: 375000,
+    area: 120,
+    rooms: 3,
+    floor: 30,
+    totalFloors: 30,
+    image: property1,
+    images: [property1, property2, property3],
+    priceHistory: [
+      { date: '2025-10', price: 43000000 },
+      { date: '2025-12', price: 44000000 },
+      { date: '2026-02', price: 44500000 },
+      { date: '2026-04', price: 45000000 },
+    ],
+    priceScore: 'high',
+    trend: 'up',
+    trendPercent: 4.7,
+    description: 'Пентхаус на последнем этаже с панорамным остеклением и видом на Москву-Сити.',
+    features: ['Панорамное остекление', 'Москва-Сити', 'Последний этаж', 'Умный дом', 'Терраса'],
+    source: 'Яндекс.Недвижимость',
+    sourceUrl: '#',
+    addedDate: '2026-04-08',
+    lat: 55.7494,
+    lng: 37.5407,
+  },
+  {
+    id: '8',
+    title: 'Студия в курортном районе',
+    address: 'Сочи, Курортный пр., 88',
+    price: 6300000,
+    pricePerSqm: 180000,
+    area: 35,
+    rooms: 1,
+    floor: 7,
+    totalFloors: 16,
+    image: property2,
+    images: [property2, property1, property3],
+    priceHistory: [
+      { date: '2025-10', price: 6500000 },
+      { date: '2025-12', price: 6400000 },
+      { date: '2026-02', price: 6350000 },
+      { date: '2026-04', price: 6300000 },
+    ],
+    priceScore: 'low',
+    trend: 'down',
+    trendPercent: -3.1,
+    description: 'Компактная студия в курортном районе. Идеально для сдачи в аренду туристам.',
+    features: ['Курортный район', 'Арендный бизнес', 'Бассейн', 'До моря 5 мин'],
+    source: 'Авито',
+    sourceUrl: '#',
+    addedDate: '2026-04-06',
+    lat: 43.5720,
+    lng: 39.7340,
+  },
 ];
 
 const MOCK_PROJECTS: ChatProject[] = [
@@ -121,6 +266,7 @@ interface ChatStore {
   isSidebarOpen: boolean;
   isSidebarPinned: boolean;
   isTyping: boolean;
+  isInitialized: boolean;
   selectedCity: CityKey;
   appMode: AppMode;
   setAppMode: (mode: AppMode) => void;
@@ -132,23 +278,18 @@ interface ChatStore {
   setSidebarOpen: (open: boolean) => void;
   toggleSidebarPin: () => void;
   simulateAIResponse: (userMessage: string) => void;
+  initWelcome: () => void;
 }
 
 export const useChatStore = create<ChatStore>((set, get) => ({
-  messages: [
-    {
-      id: '0',
-      role: 'assistant',
-      content: 'Привет! Я ваш AI-ассистент по недвижимости. Опишите, что вы ищете — например, «квартиры с видом на море до 10 млн» или «новостройки рядом с метро, сдача 2027». Я подберу лучшие варианты и проанализирую цены.',
-      timestamp: new Date(),
-    },
-  ],
+  messages: [],
   projects: MOCK_PROJECTS,
   selectedProperty: null,
   isPanelOpen: false,
   isSidebarOpen: localStorage.getItem('sidebar-pinned') === 'true',
   isSidebarPinned: localStorage.getItem('sidebar-pinned') === 'true',
   isTyping: false,
+  isInitialized: false,
   selectedCity: (localStorage.getItem('selected-city') as CityKey) || 'moscow',
   appMode: 'gpt',
   setAppMode: (mode) => set({ appMode: mode }),
@@ -172,6 +313,20 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     return { isSidebarPinned: newPinned, isSidebarOpen: newPinned };
   }),
 
+  initWelcome: () => {
+    const store = get();
+    if (store.isInitialized) return;
+    set({ isInitialized: true, isTyping: true });
+
+    setTimeout(() => {
+      set({ isTyping: false });
+      store.addMessage({
+        role: 'assistant',
+        content: 'Привет! Я ваш AI-ассистент по недвижимости. Опишите, что вы ищете — например, «квартиры с видом на море до 10 млн» или «новостройки рядом с метро, сдача 2027». Я подберу лучшие варианты и проанализирую цены.',
+      });
+    }, 3000);
+  },
+
   simulateAIResponse: (userMessage: string) => {
     const store = get();
     const cityLabel = CITY_LABELS[store.selectedCity];
@@ -187,13 +342,13 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         response = {
           role: 'assistant',
           content: 'Нашёл **3 варианта** по вашему запросу. Обратите внимание на первый — цена снизилась на 7.6% за полгода, сейчас ниже рынка. Вот подборка:',
-          properties: MOCK_PROPERTIES,
+          properties: MOCK_PROPERTIES.filter(p => p.address.includes('Сочи')),
         };
       } else if (lower.includes('новостройк') || lower.includes('метро') || lower.includes('москв')) {
         response = {
           role: 'assistant',
           content: 'Вот **актуальные новостройки** бизнес-класса с хорошей транспортной доступностью:',
-          properties: [MOCK_PROPERTIES[1]],
+          properties: MOCK_PROPERTIES.filter(p => p.address.includes('Москва')),
         };
       } else if (lower.includes('студи') || lower.includes('инвестиц') || lower.includes('спб') || lower.includes('петербург')) {
         response = {
