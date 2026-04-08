@@ -95,6 +95,7 @@ const MOCK_PROJECTS: ChatProject[] = [
 ];
 
 export type CityKey = 'moscow' | 'spb' | 'sochi' | 'kazan' | 'novosibirsk';
+export type AppMode = 'gpt' | 'catalog';
 
 const CITY_LABELS: Record<CityKey, string> = {
   moscow: 'Москва',
