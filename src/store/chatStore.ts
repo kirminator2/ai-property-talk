@@ -136,6 +136,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   closePanel: () => set({ isPanelOpen: false }),
   toggleSidebar: () => set((s) => ({ isSidebarOpen: !s.isSidebarOpen })),
   setSidebarOpen: (open) => set({ isSidebarOpen: open }),
+  toggleSidebarPin: () => set((s) => {
+    const newPinned = !s.isSidebarPinned;
+    localStorage.setItem('sidebar-pinned', String(newPinned));
+    return { isSidebarPinned: newPinned, isSidebarOpen: newPinned };
+  }),
 
   simulateAIResponse: (userMessage: string) => {
     const store = get();
