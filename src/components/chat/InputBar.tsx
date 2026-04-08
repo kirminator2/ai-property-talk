@@ -1,21 +1,63 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useChatStore } from '@/store/chatStore';
+import { useChatStore, type CityKey } from '@/store/chatStore';
 import property1 from '@/assets/property-1.jpg';
 import property2 from '@/assets/property-2.jpg';
 import property3 from '@/assets/property-3.jpg';
 
-const SUGGESTIONS = [
-  { label: 'Квартиры с видом на море до 10 млн', image: property1 },
-  { label: 'Новостройки рядом с метро', image: property2 },
-  { label: 'Студии для инвестиций в СПб', image: property3 },
-  { label: 'Квартиры у парка с террасой', image: property1 },
-  { label: 'Пентхаусы в центре Москвы', image: property2 },
-  { label: 'Апартаменты с отделкой под ключ', image: property3 },
-  { label: 'Квартиры в сданных новостройках', image: property1 },
-  { label: 'Двушки до 15 млн у метро', image: property2 },
-];
+const CITY_SUGGESTIONS: Record<CityKey, { label: string; image: string }[]> = {
+  moscow: [
+    { label: 'Новостройки рядом с метро', image: property2 },
+    { label: 'Пентхаусы в центре Москвы', image: property1 },
+    { label: 'Двушки до 15 млн у метро', image: property3 },
+    { label: 'Апартаменты с отделкой под ключ', image: property2 },
+    { label: 'Квартиры в сданных новостройках', image: property1 },
+    { label: 'Квартиры у парка с террасой', image: property3 },
+    { label: 'Студии для инвестиций', image: property2 },
+    { label: 'Лофты в историческом центре', image: property1 },
+  ],
+  spb: [
+    { label: 'Студии на Васильевском', image: property3 },
+    { label: 'Квартиры у Невского проспекта', image: property1 },
+    { label: 'Новостройки в Приморском', image: property2 },
+    { label: 'Видовые квартиры на набережной', image: property3 },
+    { label: 'Инвестиционные студии', image: property1 },
+    { label: 'Квартиры рядом с парками', image: property2 },
+    { label: 'Апартаменты в Петроградском', image: property3 },
+    { label: 'Двушки до 12 млн у метро', image: property1 },
+  ],
+  sochi: [
+    { label: 'Квартиры с видом на море до 10 млн', image: property1 },
+    { label: 'Апартаменты у пляжа', image: property2 },
+    { label: 'Новостройки в Адлере', image: property3 },
+    { label: 'Квартиры с террасой и видом', image: property1 },
+    { label: 'Студии для сдачи в аренду', image: property2 },
+    { label: 'Жильё рядом с Олимпийским парком', image: property3 },
+    { label: 'Пентхаусы на первой линии', image: property1 },
+    { label: 'Квартиры в горном кластере', image: property2 },
+  ],
+  kazan: [
+    { label: 'Новостройки в центре Казани', image: property2 },
+    { label: 'Квартиры у Кремля', image: property1 },
+    { label: 'Студии для инвестиций', image: property3 },
+    { label: 'Двушки до 8 млн', image: property2 },
+    { label: 'Квартиры рядом с метро', image: property1 },
+    { label: 'Жильё у озера Кабан', image: property3 },
+    { label: 'Апартаменты с отделкой', image: property2 },
+    { label: 'Новостройки сдача 2026', image: property1 },
+  ],
+  novosibirsk: [
+    { label: 'Новостройки на левом берегу', image: property2 },
+    { label: 'Квартиры в Академгородке', image: property3 },
+    { label: 'Студии до 4 млн', image: property1 },
+    { label: 'Двушки рядом с метро', image: property2 },
+    { label: 'Квартиры у набережной Оби', image: property3 },
+    { label: 'Новостройки бизнес-класса', image: property1 },
+    { label: 'Апартаменты в центре', image: property2 },
+    { label: 'Жильё рядом с парками', image: property3 },
+  ],
+};
 
 const InputBar = () => {
   const [input, setInput] = useState('');
@@ -23,8 +65,10 @@ const InputBar = () => {
   const simulateAIResponse = useChatStore((s) => s.simulateAIResponse);
   const isTyping = useChatStore((s) => s.isTyping);
   const messages = useChatStore((s) => s.messages);
+  const selectedCity = useChatStore((s) => s.selectedCity);
 
   const isInitial = messages.length <= 1;
+  const suggestions = CITY_SUGGESTIONS[selectedCity];
 
   const send = (text?: string) => {
     const msg = (text ?? input).trim();
@@ -75,17 +119,18 @@ const InputBar = () => {
           </button>
         </div>
 
-        {/* Suggestion cards - 8 cards in 2 rows on initial, pills after */}
-        <AnimatePresence>
+        {/* Suggestion cards - city-specific */}
+        <AnimatePresence mode="wait">
           {isInitial && (
             <motion.div
+              key={selectedCity}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10, height: 0 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
               className="grid grid-cols-2 sm:grid-cols-4 gap-2"
             >
-              {SUGGESTIONS.map((s) => (
+              {suggestions.map((s) => (
                 <button
                   key={s.label}
                   onClick={() => send(s.label)}
@@ -110,7 +155,7 @@ const InputBar = () => {
 
         {!isInitial && (
           <div className="flex gap-2 overflow-x-auto scrollbar-thin pb-1">
-            {SUGGESTIONS.slice(0, 3).map((s) => (
+            {suggestions.slice(0, 3).map((s) => (
               <button
                 key={s.label}
                 onClick={() => send(s.label)}
