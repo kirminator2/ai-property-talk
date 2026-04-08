@@ -7,8 +7,13 @@ import TypingIndicator from './TypingIndicator';
 const ChatWindow = () => {
   const messages = useChatStore((s) => s.messages);
   const isTyping = useChatStore((s) => s.isTyping);
+  const initWelcome = useChatStore((s) => s.initWelcome);
   const endRef = useRef<HTMLDivElement>(null);
-  const isInitial = messages.length <= 1;
+  const isInitial = messages.length <= 1 && !isTyping;
+
+  useEffect(() => {
+    initWelcome();
+  }, [initWelcome]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });

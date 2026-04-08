@@ -4,8 +4,6 @@ import { useChatStore } from '@/store/chatStore';
 
 declare const ymaps3: any;
 
-const formatShortPrice = (n: number) => `${(n / 1_000_000).toFixed(1)}М ₽`;
-
 const CatalogMap = ({ properties }: { properties: Property[] }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<any>(null);
@@ -16,6 +14,47 @@ const CatalogMap = ({ properties }: { properties: Property[] }) => {
     () => properties.filter((p) => p.lat != null && p.lng != null),
     [properties]
   );
+
+  const createMarkerElement = (p: Property) => {
+    const el = document.createElement('div');
+    el.style.cssText = 'cursor:pointer;transform:translate(-50%,-50%);';
+
+    el.innerHTML = `
+      <div style="
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 3px solid hsl(38 92% 55%);
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        transition: transform 0.2s, box-shadow 0.2s;
+      ">
+        <img
+          src="${p.image}"
+          alt="${p.title}"
+          style="width:100%;height:100%;object-fit:cover;"
+        />
+      </div>
+    `;
+
+    el.addEventListener('mouseenter', () => {
+      const inner = el.firstElementChild as HTMLElement;
+      if (inner) {
+        inner.style.transform = 'scale(1.25)';
+        inner.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)';
+      }
+    });
+    el.addEventListener('mouseleave', () => {
+      const inner = el.firstElementChild as HTMLElement;
+      if (inner) {
+        inner.style.transform = 'scale(1)';
+        inner.style.boxShadow = '0 2px 12px rgba(0,0,0,0.4)';
+      }
+    });
+
+    el.addEventListener('click', () => selectProperty(p));
+    return el;
+  };
 
   // Init map
   useEffect(() => {
@@ -29,7 +68,7 @@ const CatalogMap = ({ properties }: { properties: Property[] }) => {
 
       const center = geoProperties.length > 0
         ? [geoProperties[0].lng!, geoProperties[0].lat!]
-        : [37.6173, 55.7558]; // Moscow default
+        : [37.6173, 55.7558];
 
       const map = new ymaps3.YMap(containerRef.current, {
         location: { center, zoom: 10 },
@@ -39,55 +78,6 @@ const CatalogMap = ({ properties }: { properties: Property[] }) => {
       map.addChild(new ymaps3.YMapDefaultFeaturesLayer({}));
 
       mapRef.current = map;
-
-      // Add markers
-      updateMarkers(geoProperties);
-    };
-
-    const updateMarkers = (props: Property[]) => {
-      const map = mapRef.current;
-      if (!map) return;
-
-      // Remove old markers
-      markersRef.current.forEach((m) => map.removeChild(m));
-      markersRef.current = [];
-
-      props.forEach((p) => {
-        if (p.lat == null || p.lng == null) return;
-
-        const el = document.createElement('div');
-        el.className = 'ymaps-price-marker';
-        el.innerHTML = `<div style="
-          background: hsl(221 83% 53%);
-          color: white;
-          font-size: 11px;
-          font-weight: 700;
-          padding: 4px 8px;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-          cursor: pointer;
-          white-space: nowrap;
-          transform: translate(-50%, -100%);
-        ">${formatShortPrice(p.price)}</div>
-        <div style="
-          width: 0; height: 0;
-          border-left: 5px solid transparent;
-          border-right: 5px solid transparent;
-          border-top: 5px solid hsl(221 83% 53%);
-          margin: 0 auto;
-          transform: translateX(0);
-        "></div>`;
-
-        el.addEventListener('click', () => selectProperty(p));
-
-        const marker = new ymaps3.YMapMarker(
-          { coordinates: [p.lng!, p.lat!] },
-          el
-        );
-
-        map.addChild(marker);
-        markersRef.current.push(marker);
-      });
     };
 
     init();
@@ -107,43 +97,17 @@ const CatalogMap = ({ properties }: { properties: Property[] }) => {
     const map = mapRef.current;
     if (!map) return;
 
-    // Remove old
     markersRef.current.forEach((m) => {
       try { map.removeChild(m); } catch {}
     });
     markersRef.current = [];
 
     geoProperties.forEach((p) => {
-      if (p.lat == null || p.lng == null) return;
-
-      const el = document.createElement('div');
-      el.innerHTML = `<div style="
-        background: hsl(221 83% 53%);
-        color: white;
-        font-size: 11px;
-        font-weight: 700;
-        padding: 4px 8px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        cursor: pointer;
-        white-space: nowrap;
-        transform: translate(-50%, -100%);
-      ">${formatShortPrice(p.price)}</div>
-      <div style="
-        width: 0; height: 0;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 5px solid hsl(221 83% 53%);
-        margin: 0 auto;
-      "></div>`;
-
-      el.addEventListener('click', () => selectProperty(p));
-
+      const el = createMarkerElement(p);
       const marker = new ymaps3.YMapMarker(
         { coordinates: [p.lng!, p.lat!] },
         el
       );
-
       map.addChild(marker);
       markersRef.current.push(marker);
     });
