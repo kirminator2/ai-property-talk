@@ -319,11 +319,18 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     set({ isInitialized: true, isTyping: true });
 
     setTimeout(() => {
-      set({ isTyping: false });
-      store.addMessage({
-        role: 'assistant',
-        content: 'Привет! Я ваш AI-ассистент по недвижимости. Опишите, что вы ищете — например, «квартиры с видом на море до 10 млн» или «новостройки рядом с метро, сдача 2027». Я подберу лучшие варианты и проанализирую цены.',
-      });
+      set((state) => ({
+        isTyping: false,
+        messages: [
+          ...state.messages,
+          {
+            id: crypto.randomUUID(),
+            timestamp: new Date(),
+            role: 'assistant',
+            content: 'Привет! Я ваш AI-ассистент по недвижимости. Опишите, что вы ищете — например, «квартиры с видом на море до 10 млн» или «новостройки рядом с метро, сдача 2027». Я подберу лучшие варианты и проанализирую цены.',
+          },
+        ],
+      }));
     }, 6000);
   },
 
@@ -363,8 +370,13 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         };
       }
 
-      set({ isTyping: false });
-      store.addMessage(response);
+      set((state) => ({
+        isTyping: false,
+        messages: [
+          ...state.messages,
+          { ...response, id: crypto.randomUUID(), timestamp: new Date() },
+        ],
+      }));
     }, 1500);
   },
 }));

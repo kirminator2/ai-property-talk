@@ -93,7 +93,12 @@ const InputBar = () => {
   }, [input]);
 
   return (
-    <div className="bg-background px-3 shrink-0 py-3">
+    <motion.div
+      layout="position"
+      initial={false}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className="bg-background px-3 shrink-0 py-3"
+    >
       <div className="max-w-3xl mx-auto space-y-12 w-full">
         {/* Input field with snake border */}
         <div className="snake-border rounded-xl">
@@ -165,7 +170,7 @@ const InputBar = () => {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
