@@ -3,9 +3,10 @@ import { Bot } from 'lucide-react';
 
 const TypingIndicator = () => (
   <motion.div
-    initial={{ opacity: 0, y: 8 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -4 }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.3 }}
     className="flex gap-2.5"
   >
     <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center shrink-0">
