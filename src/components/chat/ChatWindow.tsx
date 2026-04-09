@@ -9,7 +9,7 @@ const ChatWindow = () => {
   const isTyping = useChatStore((s) => s.isTyping);
   const initWelcome = useChatStore((s) => s.initWelcome);
   const endRef = useRef<HTMLDivElement>(null);
-  const isInitial = messages.length <= 1 && !isTyping;
+  const hasUserMessage = messages.some((m) => m.role === 'user');
 
   useEffect(() => {
     initWelcome();
@@ -20,7 +20,7 @@ const ChatWindow = () => {
   }, [messages, isTyping]);
 
   return (
-    <div className={`md:overflow-y-auto scrollbar-thin ${isInitial ? 'shrink-0' : 'flex-1'}`}>
+    <div className={`md:overflow-y-auto scrollbar-thin ${hasUserMessage ? 'flex-1' : 'shrink-0'}`}>
       <div className="max-w-3xl mx-auto px-4 py-6 space-y-5">
         {messages.map((msg) => (
           <MessageBubble key={msg.id} message={msg} />
