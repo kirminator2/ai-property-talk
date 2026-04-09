@@ -9,7 +9,7 @@ const ChatWindow = () => {
   const isTyping = useChatStore((s) => s.isTyping);
   const initWelcome = useChatStore((s) => s.initWelcome);
   const endRef = useRef<HTMLDivElement>(null);
-  const isInitial = messages.length <= 1 && !isTyping;
+  const hasUserMessage = messages.some((m) => m.role === 'user');
 
   useEffect(() => {
     initWelcome();
