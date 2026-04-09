@@ -165,7 +165,7 @@ const InputBar = () => {
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
