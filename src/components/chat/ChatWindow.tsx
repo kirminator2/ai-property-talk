@@ -20,7 +20,7 @@ const ChatWindow = () => {
   }, [messages, isTyping]);
 
   return (
-    <div className={`md:overflow-y-auto scrollbar-thin ${isInitial ? 'shrink-0' : 'flex-1'}`}>
+    <div className={`md:overflow-y-auto scrollbar-thin ${hasUserMessage ? 'flex-1' : 'shrink-0'}`}>
       <div className="max-w-3xl mx-auto px-4 py-6 space-y-5">
         {messages.map((msg) => (
           <MessageBubble key={msg.id} message={msg} />
